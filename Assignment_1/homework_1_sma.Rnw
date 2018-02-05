@@ -1,0 +1,344 @@
+\documentclass{article}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage[plain]{algorithm}
+\usepackage{algpseudocode}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{inconsolata}
+\graphicspath{ {images/} }
+
+\lstdefinestyle{Rsettings}{
+  basicstyle=\ttfamily,
+  breaklines=true,
+  showstringspaces=false,
+  keywords={if, else, function, theFunction, tmp}, % Write as many keywords 
+  otherkeywords={},
+  commentstyle=\itshape\color{Rcommentcolor},
+  keywordstyle=\color{keywordcolor},
+  moredelim=[s][\color{delimcolor}]{"}{"},
+}
+
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\usetikzlibrary{automata,positioning}
+
+%
+% Basic Document Settings
+%
+
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+\linespread{1.1}
+
+\pagestyle{fancy}
+%\lhead{Franklin, Katzen, McKenzie, Subbaiah}
+\lhead{\hmwkClass\: \hmwkTitle}
+\rhead{\firstxmark}
+\lfoot{\lastxmark}
+\cfoot{\thepage}
+
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\setlength\parindent{0pt}
+
+%
+% Create Problem Sections
+%
+
+\newcommand{\enterProblemHeader}[1]{
+    \nobreak\extramarks{}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+    \nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+}
+
+\newcommand{\exitProblemHeader}[1]{
+    \nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+    \stepcounter{#1}
+    \nobreak\extramarks{Problem \arabic{#1}}{}\nobreak{}
+}
+
+\setcounter{secnumdepth}{0}
+\newcounter{partCounter}
+\newcounter{homeworkProblemCounter}
+\setcounter{homeworkProblemCounter}{1}
+\nobreak\extramarks{Problem \arabic{homeworkProblemCounter}}{}\nobreak{}
+
+%
+% Homework Problem Environment
+%
+% This environment takes an optional argument. When given, it will adjust the
+% problem counter. This is useful for when the problems given for your
+% assignment aren't sequential. See the last 3 problems of this template for an
+% example.
+%
+\newenvironment{homeworkProblem}[1][-1]{
+    \ifnum#1>0
+        \setcounter{homeworkProblemCounter}{#1}
+    \fi
+    \section{Problem \arabic{homeworkProblemCounter}}
+    \setcounter{partCounter}{1}
+    \enterProblemHeader{homeworkProblemCounter}
+}{
+    \exitProblemHeader{homeworkProblemCounter}
+}
+
+%
+% Homework Details
+%   - Title
+%   - Due date
+%   - Class
+%   - Section/Time
+%   - Instructor
+%   - Author
+%
+
+\newcommand{\hmwkTitle}{Homework 1}
+% Change Date Here
+\newcommand{\hmwkDueDate}{Feb 6, 2018}
+% Change Class Name Here
+\newcommand{\hmwkClass}{Social Media Analytics}
+\newcommand{\hmwkClassTime}{MSBA}
+\newcommand{\hmwkClassInstructor}{Professor Anitesh Barua}
+\newcommand{\hmwkAuthorName}{\textbf{Clarissa Franklin} \and \textbf{Kyle Katzen} \and \textbf{Paige McKenzie} \and \textbf{Meyappan Subbaiah}}
+
+%
+% Title Page
+%
+
+\title{
+    \vspace{2in}
+    \textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\
+    \normalsize\vspace{0.1in}\small{Date:\  \hmwkDueDate}\\
+    \vspace{0.1in}\large{\textit{\hmwkClassInstructor}}
+    \vspace{3in}
+}
+
+\author{\hmwkAuthorName}
+\date{}
+
+\renewcommand{\part}[1]{\textbf{\large Part \Alph{partCounter}}\stepcounter{partCounter}\\}
+
+%
+% Various Helper Commands
+%
+
+% Useful for algorithms
+\newcommand{\alg}[1]{\textsc{\bfseries \footnotesize #1}}
+
+% For derivatives
+\newcommand{\deriv}[1]{\frac{\mathrm{d}}{\mathrm{d}x} (#1)}
+
+% For partial derivatives
+\newcommand{\pderiv}[2]{\frac{\partial}{\partial #1} (#2)}
+
+% Integral dx
+\newcommand{\dx}{\mathrm{d}x}
+
+% Alias for the Solution section header
+\newcommand{\solution}{\textbf{\large Solution}}
+
+% Probability commands: Expectation, Variance, Covariance, Bias
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Bias}{\mathrm{Bias}}
+
+
+
+\begin{document}
+
+
+\maketitle
+\pagebreak
+
+
+\begin{homeworkProblem}
+
+
+  \textbf{Find Preditors of Influence:}
+  
+  Note to find accompanying python code for this problem, please navigate to the \href{https://github.com/p-mckenzie/social-media-analytics/blob/master/Assignment_1/Homework_1.ipynb}{ predictors jupyter notebook on the groups' github.}
+
+  \begin{enumerate}[label=\Alph*]
+    \item From your model, which factors are best predictors of influence? (Provide screenshots). Are there any surprises here? How can a business use your model/results? 
+    \item If the model classifies an individual as a non-influencer, s/he is not selected/paid by the retailer to tweet. What is the lift in expected net profit from using your analytic model (versus not using analytics)? 
+    \item What is the lift in net profit from using a perfect analytic model (versus not using analytics)?
+    \item Show all calculations. 
+  \end{enumerate}
+  
+  
+  \textbf{Part A} \\
+  
+  We ran three primary models, as summarized below:
+  
+  \begin{enumerate}
+    \item Untransformed variables: accuracy score=0.752
+    \item A-B variables: accuracy score =0.755
+    \item A/B variables: accuracy score=0.546
+  \end{enumerate}
+  
+
+  The A/B variable model did not perform well. The A-B model and untransformed model both performed well. We chose the model with the highest accuracy score, the untransformed model. The (normalized) feature importance values are shown in the graph below. \\
+  
+  \begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.5]{FI_part1.png}
+  \end{figure}
+  
+  The most important features were A listed count, A retweets received, A network feature 1, B listed count and B listed count. Interestingly, the follower count was not an important feature, nor was the number of mentions received. As expected, listed count and retweets received were prominent features. \\
+
+In an attempt to improve our model, we ran a subsequent model where the less important variables were omitted. In this model, our accuracy score increased slightly to 0.759. Since the performance metric improved, we selected this model as our final model. \\
+
+  \textbf{Part B-D} \\
+  
+  Note: Code embeeded here to highlight calculations. 
+  
+<<eval=FALSE>>=
+profit_comp = pd.DataFrame([y_test, prediction4, X_test[:,0], X_test[:,11]], 
+                           index=['true', 'pred', 'A_followers', 'B_followers']).T
+
+profit_comp['correct'] = profit_comp['true']==profit_comp['pred']
+#odds purchase * profit if purchase
+profit_comp['Strategy_A'] = (profit_comp['true']*profit_comp['A_followers']*.0005*10) +
+  (abs(profit_comp['true']-1)*profit_comp['B_followers']*.0005*10)-10 
+
+
+#prediction was incorrect
+profit_comp.loc[~profit_comp['correct'], 'Strategy_B'] = -10 
+
+
+profit_comp.loc[(profit_comp['correct']) & (profit_comp['pred']==1.), 'Strategy_B'] = 
+  (profit_comp['A_followers']*.00075*10)-10
+profit_comp.loc[(profit_comp['correct']) & (profit_comp['pred']==0.), 'Strategy_B'] = 
+  (profit_comp['B_followers']*.00075*10)-10
+
+profit_comp.loc[(profit_comp['true']==1.), 'Strategy_C'] = 
+  (profit_comp['A_followers']*.00075*10)-10
+profit_comp.loc[(profit_comp['true']==0.), 'Strategy_C'] = 
+  (profit_comp['B_followers']*.00075*10)-10
+
+profit_comp.head(5)
+@
+  
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.5]{pr_head.png}
+\end{figure}
+  
+Using this table, we will calculate the financial value of this model. 
+
+<<eval=FALSE>>=
+print "Profit of Current Strategy: ", '${:,.2f}'.format(sum(profit_comp['Strategy_A']))
+print "Profit with prediction model: ", '${:,.2f}'.format(sum(profit_comp['Strategy_B']))
+print "Profit with perfect prediction: ", '${:,.2f}'.format(sum(profit_comp['Strategy_C'])), '\n'
+
+print "Lift of prediction: {}".format(sum(profit_comp['Strategy_B'])/
+                                        sum(profit_comp['Strategy_A']))
+
+print "Lift of perfect model: {}".format(sum(profit_comp['Strategy_C'])/
+                                           sum(profit_comp['Strategy_A']))
+@
+
+\textbf{Profit of Current Strategy:}  \$8,512,737.90 \\
+\textbf{Profit with prediction model:}  \$11,898,965.42 \\
+\textbf{Profit with perfect prediction:}  \$12,777,356.84  \\ 
+
+\textbf{Lift of prediction:} 1.39778359933 \\
+\textbf{Lift of perfect model:} 1.50096913591 \\
+
+Please refer to python code and comments above for calculations. As shown, the profit of the current strategy (pay A and B each \$5 to tweet once) is \$8.513MM, while the profit for our prediction model (pick A OR B to pay \$10 to tweet twice) is \$11.899 million. A perfect prediction model would yield a profit of \$12.777. \\
+
+The lift of our prediction model is 1.398 and the lift of the perfect model is 1.501. Our model significantly improves expected profit.
+
+
+\end{homeworkProblem}
+
+\pagebreak
+
+\begin{homeworkProblem}
+
+\textbf{Part II: Finding influencers from Twitter } \\
+
+\begin{enumerate}
+  \item Collect about 5000 tweets on any topic (e.g., politics, sports, current events, etc.). In addition to the tweet itself, the Twitter API provides a large quantity of information about the tweet as well as the author. Fetch all of this additional information along with the tweets.
+  \item Clean the tweets data and display in the format specified. This format highlights the original poster, the tagged individual, and whether the tweet was a retweet or an original tweet. 
+  \item Calculate the degree, betweenness and closeness of each node in the above network.
+  \item Using the results from Part I, create a list of top 50 influencers from the tweets.
+\end{enumerate}
+
+\textbf{Part 1: Raw Twitter data}
+
+We selected the \textit{Pyeongchang 2018 Winter Olympics} as our topic to retrieve tweets from Twitter. 
+
+<<echo=FALSE,message=FALSE,warning=FALSE>>=
+library(tidyverse)
+r_csv <- read_csv("raw_tweets.csv")
+head(r_csv)
+@
+
+The tweets are quite long to look at, here is a sample of one tweet. 
+\begin{small}
+<<echo=FALSE,message=FALSE,warning=FALSE>>=
+library(knitr)
+print(wrap_rmd(text=r_csv$text[4]))
+@
+\end{small}
+
+\textbf{Part 2: Clean Twitter data}
+
+<<echo=FALSE,message=FALSE,warning=FALSE>>=
+c_csv <- read_csv("clean_tweets_v2.csv") %>% select(-index) %>% rename(clean_text_screen_name=test)
+head(c_csv)
+@
+
+\textbf{Part 3: Calculations}
+
+Prior to calculations a directed network graph was created, as seen below. \\
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Graph.png}
+\end{figure}
+
+
+As you can see above, there are only a few people in the middle that connect otherwise wildy disconnected people. However, these are all terminal connections. As you'll see in the dataframe shortly, this will cause the betweeness of every node to be 0. \\
+
+<<echo=FALSE,message=FALSE,warning=FALSE>>=
+n_csv <- read_csv("network_calcs.csv") %>% rename(name=index)
+head(n_csv)
+@
+
+All network calculations and graph depictions can be found in the following \href{https://github.com/p-mckenzie/social-media-analytics/blob/master/Assignment_1/Network.ipynb}{network jupyter notebook, on the group's github.} \\
+
+\textbf{Top 50 Influencers}
+
+[Discussion of Score calculation:]
+
+<<echo=FALSE,message=FALSE,warning=FALSE>>=
+n_csv %>% select(name,score) %>%  arrange(-score) %>% print(n=50)
+@
+
+Note: The required csvs are attached in this homework submission. \\
+
+\end{homeworkProblem}
+
+\end{document}

@@ -329,9 +329,9 @@ head(n_csv)
 
 All network calculations and graph depictions can be found in the following \href{https://github.com/p-mckenzie/social-media-analytics/blob/master/Assignment_1/Network.ipynb}{network jupyter notebook, on the group's github.} \\
 
-\textbf{Top 50 Influencers}
+\textbf{Top 50 Influencers} \\
 
-[Discussion of Score calculation:]
+We used the importance ranking from part 1 to guide our decision for how to weight the important variables. Since listed count and retweets were about .0001 and the mystery network feature was about .00014, we gave our variables similar proportions. Because we didn't know what was in the network feature, we just used both of our useful network features and gave them equal weight. We standardized listed count, closeness, retweets, and scaled degree so that they would all be in the same units, and then gave a score to each twitter user based on a linear combination of the weights and the standardized units. \\
 
 <<echo=FALSE,message=FALSE,warning=FALSE>>=
 n_csv %>% select(name,score) %>%  arrange(-score) %>% print(n=50)

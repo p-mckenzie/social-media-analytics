@@ -26,21 +26,27 @@ ggplot(df_heatmap,aes(speaker,variable)) +
 
 # --------------------------------------------------
 # plot trump's speeches over time
-mini_df = df_topics[df_topics$speaker=='Donald Trump',]
-mini_df$date = with(mini_df, ISOdatetime(year, month, day,0,0,0))
-mini_df = mini_df[,seq(9,19)]
+
+#mini_df = df_topics[df_topics$speaker=='Donald Trump',]
+#mini_df$date = with(mini_df, ISOdatetime(year, month, day,0,0,0))
+#mini_df = mini_df[,seq(9,19)]
+mini_df <- df_topics %>% filter(speaker=='Donald Trump') %>% mutate(
+  date = ISOdatetime(year, month, day,0,0,0)
+) %>% select(contains("Topic"),date,-topics)
+
 
 mini_df = reshape2::melt(mini_df, id.vars = "date")
 mini_df = group_by(mini_df, variable) %>% mutate(wt = value/sum(value))
 
 # build the plot
-ggplot(mini_df) +
-  aes(x = variable, y = date, weight = wt, fill=variable) +
-  geom_violin() + theme(legend.position="none") + 
+ggplot(mini_df,aes(x = variable, y = date, weight = wt, fill=variable)) +
+  geom_violin() + 
   geom_jitter(shape=16, position=position_jitter(0),
               data=mini_df[mini_df$value==1,]) +
   labs(x="Topic",y="Date",
-       titles="Distribution of Topics over Time for Donald Trump")
+       titles="Distribution of Topics over Time for Donald Trump") + 
+  theme_bw(base_size=16) + 
+  theme(legend.position="none")
 # --------------------------------------------------
 # plot topic over years
 df_year_sum <- df_test %>% select(-speaker)  %>% group_by(year) %>%  summarise_all(funs(sum))
@@ -74,3 +80,20 @@ ggplot(topic_word,aes(x=reorder(word,weighted_numbers),y=weighted_numbers,fill=T
        title='Distribution of Top 10 words per Topic') + 
   scale_y_continuous(labels = scales::percent)
 
+
+### MDS plot
+mds_df <- read_csv("MDS_cluster.csv") %>% select(-X1) %>% mutate(
+  cluster = paste0("Cluster ",factor(cluster))
+)
+
+mds_labels <- mds_df %>% filter(x_vals>0.65 | x_vals < -0.65 |
+                                  y_vales>0.65 | y_vales < -0.65)
+
+
+ggplot(mds_df) +
+  geom_point(aes(x=x_vals,y=y_vales,color=cluster),show.legend = FALSE) + 
+  theme_solarized(base_size = 16) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
+  labs(x="",y="",titles="MDS Map,Comparing Cosine Similarity to KMeans",
+       subtitle="For all SOTUs given, faceted by cluster") + 
+  facet_wrap(~cluster)
